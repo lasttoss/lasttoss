@@ -15,6 +15,7 @@ the load test found"* section and the fix it forced.
 |---|---|---|
 | [udp-realtime-gameserver](https://github.com/lasttoss/udp-realtime-gameserver) | 30 Hz UDP game server in Go: authoritative rooms of 10, region bucketed matchmaking, HMAC signed join tickets, ghost snapshots, client-side prediction and reconciliation, Prometheus, a canvas viewer and a bot swarm, plus a Helm chart that runs it on Kubernetes | 1000 bots at a flat 30.0 snapshots/second each, tick p95 18 ms of a 33.3 ms budget |
 | [nakama-go-server-kit](https://github.com/lasttoss/nakama-go-server-kit) | The part of a Nakama module that is hardest to test: a fixed-tick match loop that takes its time from an injected clock, shipped with the test kit that steps that time by hand | 95% of statements covered in one second under `-race`, and three races the tests found that a `sleep` would have hidden |
+| [go-loadtest-swarm](https://github.com/lasttoss/go-loadtest-swarm) | The harness behind the numbers above: a YAML scenario, a latency histogram accurate to 1%, a report, and an exit code - so a load test can fail a build | p50 2ms next to a max of 1.2s in the same run, which is the pair a mean hides |
 | [ts-nakama-game-demo](https://github.com/lasttoss/ts-nakama-game-demo) | Nakama server plugin in TypeScript: device auth, four RPCs, an authoritative match, storage-backed game state | private-room reuse without ever handing a player somebody else's room |
 | [zinx-server](https://github.com/lasttoss/zinx-server) | TCP game server in Go (zinx) with JWT auth, MongoDB and Redis, and a chat room | the smoke test talks the raw TLV protocol, so the protocol itself is tested |
 | [architecture-diagrams](https://github.com/lasttoss/architecture-diagrams) | How the log pipeline and the multi-region game backend fit together: ClickHouse, Airflow, Kafka, CockroachDB, geo routing | kept as mermaid sources so a diagram can be reviewed in a pull request |
@@ -23,7 +24,8 @@ the load test found"* section and the fix it forced.
 ## How I work
 
 - **Measure, then claim.** If a repository says "30 Hz" or "1000 clients", there is a harness in it
-  that produced the number, and the run is in the README.
+  that produced the number, and the run is in the README - `go-loadtest-swarm` is that harness, and its
+  own README shows the run where a local server answered in 2ms at the median and 1.2 seconds at worst.
 - **The interesting bug is the one that looks like it works.** Five of the fixes in the
   repositories above came from a test or a load run that disagreed with a green checkmark: a spawn
   ring with a sign error putting half the room on the same spot, a catch-all route answering 200
