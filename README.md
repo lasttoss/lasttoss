@@ -14,6 +14,7 @@ the load test found"* section and the fix it forced.
 | Repository | What it is | The number that matters |
 |---|---|---|
 | [udp-realtime-gameserver](https://github.com/lasttoss/udp-realtime-gameserver) | 30 Hz UDP game server in Go: authoritative rooms of 10, region bucketed matchmaking, HMAC signed join tickets, ghost snapshots, client-side prediction and reconciliation, Prometheus, a canvas viewer and a bot swarm, plus a Helm chart that runs it on Kubernetes | 1000 bots at a flat 30.0 snapshots/second each, tick p95 18 ms of a 33.3 ms budget |
+| [nakama-go-server-kit](https://github.com/lasttoss/nakama-go-server-kit) | The part of a Nakama module that is hardest to test: a fixed-tick match loop that takes its time from an injected clock, shipped with the test kit that steps that time by hand | 95% of statements covered in one second under `-race`, and three races the tests found that a `sleep` would have hidden |
 | [ts-nakama-game-demo](https://github.com/lasttoss/ts-nakama-game-demo) | Nakama server plugin in TypeScript: device auth, four RPCs, an authoritative match, storage-backed game state | private-room reuse without ever handing a player somebody else's room |
 | [zinx-server](https://github.com/lasttoss/zinx-server) | TCP game server in Go (zinx) with JWT auth, MongoDB and Redis, and a chat room | the smoke test talks the raw TLV protocol, so the protocol itself is tested |
 | [architecture-diagrams](https://github.com/lasttoss/architecture-diagrams) | How the log pipeline and the multi-region game backend fit together: ClickHouse, Airflow, Kafka, CockroachDB, geo routing | kept as mermaid sources so a diagram can be reviewed in a pull request |
@@ -23,11 +24,12 @@ the load test found"* section and the fix it forced.
 
 - **Measure, then claim.** If a repository says "30 Hz" or "1000 clients", there is a harness in it
   that produced the number, and the run is in the README.
-- **The interesting bug is the one that looks like it works.** Four of the fixes in the
+- **The interesting bug is the one that looks like it works.** Five of the fixes in the
   repositories above came from a test or a load run that disagreed with a green checkmark: a spawn
   ring with a sign error putting half the room on the same spot, a catch-all route answering 200
   for every typo, a chat room writing to a nil map, a token validator turning a garbage token into
-  a 500.
+  a 500, and a fake clock that read its own instant without the lock while handing a tick over -
+  found by `-race` the moment the test suite grew, which is the one bug a test kit must not have.
 - **One command to run it.** Every repository here starts with `docker compose up` or `make run`,
   and its README says how long the numbers took to produce.
 - **Kubernetes is not magic, UDP is not TCP.** The relay ships with the reasoning behind its chart,
