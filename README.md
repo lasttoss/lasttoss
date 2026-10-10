@@ -45,3 +45,17 @@ the load test found"* section and the fix it forced.
 
 <sub>Everything here is original work written on personal time; see each repository's
 `PROVENANCE.md`.</sub>
+
+## Repository standard
+
+Six items, applied where they mean something rather than everywhere. The exclusions are the point of
+the table: an item that cannot be honest in a repository of this kind is left out and said so.
+
+| Item | Here |
+|---|---|
+| `docker-compose.yml` | not applicable - a profile README has no service |
+| `Dockerfile` | not applicable - same reason |
+| Helm chart | not applicable - same reason |
+| Diagram | not applicable - a README-only repository carries no diagrams |
+| Tests, run in CI | not applicable - there is no code to test |
+| CI + `Makefile` | not applicable - nothing to build |
