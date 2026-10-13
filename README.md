@@ -9,6 +9,8 @@ session, a tick loop that misses its budget under load, a rollout that disconnec
 match - those are the problems worth writing down, so most of these repositories include a *"what
 the load test found"* section and the fix it forced.
 
+- **[Production notes](docs/production-notes.md)** - capacity numbers per 1,000 players, a Redis connection incident I reproduced, and what I will not claim
+
 ## Selected work
 
 | Repository | What it is | The number that matters |
