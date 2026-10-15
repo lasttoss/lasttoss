@@ -52,7 +52,7 @@ the load test found"* section and the fix it forced.
 ## Contact
 
 - Email: **3w.rain@gmail.com**
-- CV: available on request (EN / VI / 中文)
+- CV: available on request (EN / VI)
 - Open to remote contract and full-time roles in game backend, platform and infrastructure.
 
 <sub>Everything here is original work written on personal time; see each repository's
